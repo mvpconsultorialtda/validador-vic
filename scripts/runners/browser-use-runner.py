@@ -1,20 +1,23 @@
 #!/usr/bin/env python3
 """
-browser-use-runner.py — Runner central Browser-Use REAL + LLM rotator free tier.
+browser-use-runner.py — Runner central Browser-Use REAL + LLM rotator multi-key.
 
 Uso:
   python3 browser-use-runner.py --url URL [opts]
   python3 browser-use-runner.py --all              # todos apps do config/apps.yaml
   python3 browser-use-runner.py --url X --dry-run  # só plano, não executa
 
-Env vars obrigatórias (uma delas):
-  GEMINI_API_KEY (ou GEMINI_KEYS=k1,k2)
-  GROQ_KEYS=k1,k2         (fallback)
-  CEREBRAS_KEYS=k1        (segundo fallback)
+Env vars:
+  GEMINI_KEYS=k1,k2,k3,k4,k5   (recomendado - rotator round-robin)
+  GEMINI_API_KEY=k1            (fallback single-key)
+  GROQ_KEYS=k1,k2              (secondary provider)
+  GROQ_API_KEY=k1              (fallback)
+  CEREBRAS_KEYS=k1             (tertiary)
 
-Ordem de tentativa LLM: Gemini → Groq → Cerebras → falha.
+Rotator: round-robin Gemini. Em 429/quota, avança pra próxima key.
+Se todas Gemini esgotadas, tenta Groq → Cerebras.
 
-Autor: Claudia · 2026-07-22 · spec 034/035 validador-vic
+Autor: Claudia · 2026-07-22 · spec 034/035/038 validador-vic
 """
 from __future__ import annotations
 
@@ -51,25 +54,83 @@ def load_apps_config() -> list[dict]:
     return data.get("apps", [])
 
 
-def pick_llm() -> tuple[str, str] | None:
-    """Escolhe LLM provider baseado em chaves disponíveis. Retorna (provider, key)."""
+def collect_keys() -> dict[str, list[str]]:
+    """Coleta TODAS as chaves disponíveis por provider."""
+    result = {"gemini": [], "groq": [], "cerebras": []}
+
     gemini = os.environ.get("GEMINI_KEYS", "").split(",")
     gemini = [k.strip() for k in gemini if k.strip()]
     if not gemini:
-        # fallback: chave única GEMINI_API_KEY
         single = os.environ.get("GEMINI_API_KEY", "").strip()
         if single:
             gemini = [single]
-    if gemini:
-        return ("gemini", gemini[0])
+    result["gemini"] = gemini
+
     groq = os.environ.get("GROQ_KEYS", "").split(",")
     groq = [k.strip() for k in groq if k.strip()]
-    if groq:
-        return ("groq", groq[0])
+    if not groq:
+        single_groq = os.environ.get("GROQ_API_KEY", "").strip()
+        if single_groq:
+            groq = [single_groq]
+    result["groq"] = groq
+
     cerebras = os.environ.get("CEREBRAS_KEYS", "").split(",")
     cerebras = [k.strip() for k in cerebras if k.strip()]
-    if cerebras:
-        return ("cerebras", cerebras[0])
+    result["cerebras"] = cerebras
+
+    return result
+
+
+class KeyRotator:
+    """Rotator round-robin de chaves LLM. Avança automaticamente em 429/quota."""
+    def __init__(self, keys_by_provider: dict[str, list[str]]):
+        self.keys = keys_by_provider
+        self.idx = {p: 0 for p in keys_by_provider}
+        self.exhausted = {p: set() for p in keys_by_provider}
+
+    def next_key(self, provider: str = "gemini") -> tuple[str, str] | None:
+        """Retorna próxima (provider, key). None se todas esgotadas."""
+        keys = self.keys.get(provider, [])
+        if not keys:
+            for p in ("gemini", "groq", "cerebras"):
+                if p != provider and self.keys.get(p):
+                    return self.next_key(p)
+            return None
+
+        for _ in range(len(keys)):
+            i = self.idx[provider] % len(keys)
+            self.idx[provider] += 1
+            if i not in self.exhausted[provider]:
+                return (provider, keys[i])
+        # Todas exhausted deste provider — tenta fallback
+        for p in ("gemini", "groq", "cerebras"):
+            if p != provider and self.keys.get(p):
+                return self.next_key(p)
+        return None
+
+    def mark_exhausted(self, provider: str, key: str) -> None:
+        """Marca chave como esgotada (429/quota)."""
+        keys = self.keys.get(provider, [])
+        for i, k in enumerate(keys):
+            if k == key:
+                self.exhausted[provider].add(i)
+                break
+
+    def summary(self) -> dict:
+        return {
+            "gemini_keys": len(self.keys.get("gemini", [])),
+            "groq_keys": len(self.keys.get("groq", [])),
+            "cerebras_keys": len(self.keys.get("cerebras", [])),
+            "total_keys": sum(len(v) for v in self.keys.values()),
+        }
+
+
+def pick_llm() -> tuple[str, str] | None:
+    """Compat: primeira chave disponível. Backend de dry_run_plan."""
+    keys = collect_keys()
+    for provider in ("gemini", "groq", "cerebras"):
+        if keys[provider]:
+            return (provider, keys[provider][0])
     return None
 
 
@@ -80,11 +141,9 @@ def fetch_sitemap_urls(sitemap_url: str, base_url: str, max_urls: int = 50) -> l
         if r.status_code != 200:
             return [base_url]
         root = ET.fromstring(r.text)
-        # Namespace default sitemap
         ns = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
         urls = [loc.text for loc in root.findall(".//sm:loc", ns)]
         if not urls:
-            # Sem namespace
             urls = [loc.text for loc in root.findall(".//loc")]
         return urls[:max_urls] if urls else [base_url]
     except Exception as err:
@@ -93,9 +152,8 @@ def fetch_sitemap_urls(sitemap_url: str, base_url: str, max_urls: int = 50) -> l
 
 
 def dry_run_plan(url: str, sitemap: str | None, objetivo: str, max_rotas: int) -> dict:
-    """Emite plano sem executar. NUNCA expõe chave — só provider name."""
-    llm = pick_llm()
-    provider = llm[0] if llm else "NENHUM (configure GEMINI_KEYS/GROQ_KEYS/CEREBRAS_KEYS)"
+    """Emite plano sem executar. NUNCA expõe chave — só provider name + count."""
+    keys = collect_keys()
     sitemap_url = sitemap or f"{url.rstrip('/')}/sitemap.xml"
     urls_sample = fetch_sitemap_urls(sitemap_url, url, max_urls=max_rotas)
     return {
@@ -106,39 +164,30 @@ def dry_run_plan(url: str, sitemap: str | None, objetivo: str, max_rotas: int) -
         "max_rotas": max_rotas,
         "rotas_descobertas": len(urls_sample),
         "primeiras_5_rotas": urls_sample[:5],
-        "llm_provider_selecionado": provider,
+        "rotator_ativo": True,
+        "gemini_keys": len(keys["gemini"]),
+        "groq_keys": len(keys["groq"]),
+        "cerebras_keys": len(keys["cerebras"]),
+        "total_keys": sum(len(v) for v in keys.values()),
         "descricao": (
             f"Runner vai atacar {url}, ler {sitemap_url}, "
             f"visitar até {max_rotas} rotas com objetivo '{objetivo}'. "
-            "Emite JSON com bugs candidatos."
+            "Rotator multi-key ativo. Emite JSON com bugs candidatos."
         ),
     }
 
 
 async def run_browser_use_real(url: str, sitemap: str, objetivo: str, max_rotas: int) -> dict:
-    """Execução REAL Browser-Use por rota."""
+    """Execução REAL Browser-Use por rota. Com rotator multi-key."""
     from browser_use import Agent, ChatGoogle
     from browser_use.browser import BrowserSession, BrowserProfile
 
-    llm_choice = pick_llm()
-    if not llm_choice:
-        return {
-            "erro": "Sem chaves LLM (GEMINI_KEYS/GROQ_KEYS/CEREBRAS_KEYS)",
-        }
+    keys = collect_keys()
+    rotator = KeyRotator(keys)
+    summary = rotator.summary()
+    if summary["total_keys"] == 0:
+        return {"erro": "Sem chaves LLM (GEMINI_KEYS/GROQ_KEYS/CEREBRAS_KEYS/GEMINI_API_KEY/GROQ_API_KEY)"}
 
-    provider, key = llm_choice
-    if provider != "gemini":
-        # MVP: só Gemini implementado no runner real. Groq/Cerebras é fallback lógico
-        # que Browser-Use nativo não expõe direto — precisaria wrapper. Por enquanto, cai
-        # pra Gemini se disponível OU falha com msg clara.
-        return {
-            "erro": f"Runner real MVP só suporta Gemini. Provider disponível: {provider}. "
-                    "Configure GEMINI_API_KEY ou GEMINI_KEYS.",
-        }
-
-    llm = ChatGoogle(model="gemini-2.5-flash", api_key=key)
-
-    # BrowserProfile com args necessarios pra ambientes sandboxed (Claude Code, Docker, CI)
     browser_profile = BrowserProfile(
         headless=True,
         chromium_sandbox=False,
@@ -151,40 +200,70 @@ async def run_browser_use_real(url: str, sitemap: str, objetivo: str, max_rotas:
     t0 = time.time()
     bugs_reportados = []
     rotas_visitadas = 0
+    retries_count = 0
+    keys_used = set()
 
     for rota_url in urls_atacar:
         print(f"  → atacando {rota_url}", file=sys.stderr)
-        # Task específica pra esta rota
         task = (
             f"Vá para a URL {rota_url} e faça o seguinte: {objetivo}. "
             "Reporte em texto claro qualquer bug visível, erro de layout, "
             "botão que não funciona, formulário quebrado, texto que não faz sentido, "
             "ou qualquer coisa que pareça errado. Se tudo estiver OK, diga 'OK: nenhum bug visível'."
         )
-        try:
-            browser_session = BrowserSession(browser_profile=browser_profile)
-            agent = Agent(task=task, llm=llm, browser_session=browser_session)
-            result = await agent.run(max_steps=8)
-            rotas_visitadas += 1
-            # Extrai conclusão do agent
-            final_answer = str(result.final_result()) if hasattr(result, "final_result") else str(result)
-            # Se não é OK, é bug candidato
-            if "OK: nenhum bug" not in final_answer[:80]:
+
+        # Retry loop com key rotation em 429/quota
+        max_key_tries = 5
+        succeeded = False
+        for attempt in range(max_key_tries):
+            llm_pair = rotator.next_key("gemini")
+            if not llm_pair:
                 bugs_reportados.append({
                     "url": rota_url,
-                    "descricao": final_answer[:1500],
+                    "descricao": "[runner] todas as chaves LLM esgotadas",
+                    "tipo": "quota-esgotada",
                     "detectado_em": datetime.now(timezone.utc).isoformat(),
                 })
-            # Sleep pra respeitar rate limit
-            time.sleep(2)
-        except Exception as err:
-            print(f"    ✗ erro em {rota_url}: {err}", file=sys.stderr)
-            bugs_reportados.append({
-                "url": rota_url,
-                "descricao": f"[erro executando agent] {err}",
-                "detectado_em": datetime.now(timezone.utc).isoformat(),
-                "tipo": "erro-runner",
-            })
+                break
+            provider, key = llm_pair
+            keys_used.add(f"{provider}:{key[:8]}...")
+            llm = ChatGoogle(model="gemini-2.5-flash", api_key=key)
+            try:
+                browser_session = BrowserSession(browser_profile=browser_profile)
+                agent = Agent(task=task, llm=llm, browser_session=browser_session)
+                result = await agent.run(max_steps=8)
+                rotas_visitadas += 1
+                final_answer = str(result.final_result()) if hasattr(result, "final_result") else str(result)
+                if "OK: nenhum bug" not in final_answer[:80]:
+                    bugs_reportados.append({
+                        "url": rota_url,
+                        "descricao": final_answer[:1500],
+                        "detectado_em": datetime.now(timezone.utc).isoformat(),
+                        "key_prefixo": f"{provider}:{key[:8]}...",
+                    })
+                succeeded = True
+                time.sleep(2)
+                break
+            except Exception as err:
+                err_str = str(err)
+                is_quota = "429" in err_str or "RESOURCE_EXHAUSTED" in err_str or "rate limit" in err_str.lower() or "quota" in err_str.lower()
+                if is_quota:
+                    rotator.mark_exhausted(provider, key)
+                    retries_count += 1
+                    print(f"    ⟳ 429 na key {key[:8]}...; tentando próxima (attempt {attempt+1}/{max_key_tries})", file=sys.stderr)
+                    continue
+                else:
+                    print(f"    ✗ erro em {rota_url}: {err_str[:200]}", file=sys.stderr)
+                    bugs_reportados.append({
+                        "url": rota_url,
+                        "descricao": f"[erro executando agent] {err_str[:800]}",
+                        "detectado_em": datetime.now(timezone.utc).isoformat(),
+                        "tipo": "erro-runner",
+                    })
+                    break
+
+        if not succeeded and attempt == max_key_tries - 1:
+            print(f"    ✗ esgotou {max_key_tries} tentativas em {rota_url}", file=sys.stderr)
 
     return {
         "app_url": url,
@@ -193,7 +272,10 @@ async def run_browser_use_real(url: str, sitemap: str, objetivo: str, max_rotas:
         "started_at": started_at,
         "finished_at": datetime.now(timezone.utc).isoformat(),
         "duration_s": int(time.time() - t0),
-        "llm_provider": provider,
+        "rotator_ativo": True,
+        "keys_summary": summary,
+        "keys_usadas_count": len(keys_used),
+        "retries_count": retries_count,
         "rotas_descobertas_no_sitemap": len(urls),
         "rotas_visitadas": rotas_visitadas,
         "bugs_reportados": bugs_reportados,
