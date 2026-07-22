@@ -1,0 +1,20 @@
+{
+  "app_url": "https://educahubplay-omega.vercel.app",
+  "sitemap": "https://educahubplay-omega.vercel.app/sitemap.xml",
+  "objetivo": "navegue a página, tente clicar botões visíveis e reportar problemas de UX ou erros visíveis",
+  "started_at": "2026-07-22T19:42:14.545268+00:00",
+  "finished_at": "2026-07-22T19:42:50.026796+00:00",
+  "duration_s": 35,
+  "llm_provider": "gemini",
+  "rotas_descobertas_no_sitemap": 1,
+  "rotas_visitadas": 0,
+  "bugs_reportados": [
+    {
+      "url": "https://educahubplay-omega.vercel.app",
+      "descricao": "[erro executando agent] Event handler browser_use.browser.watchdog_base.BrowserSession.on_BrowserStartEvent#6304(?▶ BrowserStartEvent#53b6 🏃) timed out after 30.0s and interrupted any processing of 1 child events",
+      "detectado_em": "2026-07-22T19:42:50.026778+00:00",
+      "tipo": "erro-runner"
+    }
+  ],
+  "total_bugs": 1
+}
