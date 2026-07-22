@@ -1,0 +1,19 @@
+{
+  "app_url": "https://educahubplay-omega.vercel.app",
+  "sitemap": "https://educahubplay-omega.vercel.app/sitemap.xml",
+  "objetivo": "navegue a página, tente clicar botões visíveis e reportar problemas de UX ou erros visíveis",
+  "started_at": "2026-07-22T20:23:28.874141+00:00",
+  "finished_at": "2026-07-22T20:24:33.970054+00:00",
+  "duration_s": 65,
+  "llm_provider": "gemini",
+  "rotas_descobertas_no_sitemap": 1,
+  "rotas_visitadas": 1,
+  "bugs_reportados": [
+    {
+      "url": "https://educahubplay-omega.vercel.app",
+      "descricao": "Relatório de Teste de UX e Erros Visíveis para EducaHubPlay:\n\n1. **Navegação Inicial:**\n   - Navegação para a URL https://educahubplay-omega.vercel.app foi bem-sucedida.\n\n2. **Links de Navegação (Top Bar):**\n   - O link 'Quizzes' foi clicado com sucesso e levou à página de quizzes.\n   - Os links 'Criar', 'Assistente' e 'Entrar' não estavam visíveis na página de quizzes para serem testados.\n\n3. **Criação de Quiz:**\n   - O botão '+ Criar quiz' foi clicado com sucesso e levou ao formulário de criação de quiz.\n   - Os dropdowns 'Disciplina' e 'Dificuldade' funcionaram corretamente, permitindo a seleção de opções ('biologia' e 'Medio', respectivamente).\n   - Todos os campos de texto ('Titulo', 'Descricao', 'Serie', 'Enunciado da pergunta...', e as alternativas) foram preenchidos com sucesso.\n   - O botão 'Salvar quiz' funcionou, e o quiz foi salvo. Duas mensagens de alerta apareceram, confirmando o salvamento: \"Quiz 'Quiz Teste' salvo (unlisted). Abra em /quiz/quiz-teste para testar.\"\n   - Após salvar, a página navegou para a exibição do quiz recém-criado, mostrando a pergunta e as opções de resposta.\n\n4. **Problemas de UX/Erros Visíveis:**\n   - Não foram observados bugs visíveis, erros de layout, botões que não funcionam ou formulários quebrados nas interações realizadas até o momento. A funcionalidade de criação de quiz pareceu estar em ordem.\n   - Os alertas de salvamento do quiz aparecem duas vezes, o que pode ser um pequeno problema de UX (duplicidade de feedback).\n\n**Conclus",
+      "detectado_em": "2026-07-22T20:24:31.969944+00:00"
+    }
+  ],
+  "total_bugs": 1
+}

@@ -118,6 +118,7 @@ def dry_run_plan(url: str, sitemap: str | None, objetivo: str, max_rotas: int) -
 async def run_browser_use_real(url: str, sitemap: str, objetivo: str, max_rotas: int) -> dict:
     """Execução REAL Browser-Use por rota."""
     from browser_use import Agent, ChatGoogle
+    from browser_use.browser import BrowserSession, BrowserProfile
 
     llm_choice = pick_llm()
     if not llm_choice:
@@ -136,6 +137,13 @@ async def run_browser_use_real(url: str, sitemap: str, objetivo: str, max_rotas:
         }
 
     llm = ChatGoogle(model="gemini-2.5-flash", api_key=key)
+
+    # BrowserProfile com args necessarios pra ambientes sandboxed (Claude Code, Docker, CI)
+    browser_profile = BrowserProfile(
+        headless=True,
+        chromium_sandbox=False,
+        args=["--no-sandbox", "--disable-dev-shm-usage", "--disable-gpu"],
+    )
     urls = fetch_sitemap_urls(sitemap, url, max_urls=max_rotas)
     urls_atacar = urls[:max_rotas]
 
@@ -154,7 +162,8 @@ async def run_browser_use_real(url: str, sitemap: str, objetivo: str, max_rotas:
             "ou qualquer coisa que pareça errado. Se tudo estiver OK, diga 'OK: nenhum bug visível'."
         )
         try:
-            agent = Agent(task=task, llm=llm)
+            browser_session = BrowserSession(browser_profile=browser_profile)
+            agent = Agent(task=task, llm=llm, browser_session=browser_session)
             result = await agent.run(max_steps=8)
             rotas_visitadas += 1
             # Extrai conclusão do agent
