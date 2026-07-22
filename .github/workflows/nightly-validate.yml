@@ -1,0 +1,97 @@
+name: Nightly Validate
+
+on:
+  schedule:
+    - cron: '0 7 * * *'  # 04:00 BRT = 07:00 UTC
+  workflow_dispatch:  # trigger manual OK
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  browser-use:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app:
+          - name: educahubplay
+            url: https://educahubplay-omega.vercel.app
+          - name: xequemath
+            url: https://xequemath.vercel.app
+          - name: hq-lab
+            url: https://hq-lab.vercel.app
+          - name: lab-games
+            url: https://lab-games.vercel.app
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install runner deps
+        run: pip install -r requirements.txt
+      - name: Run Browser-Use against ${{ matrix.app.name }}
+        env:
+          GEMINI_KEYS: ${{ secrets.GEMINI_KEYS }}
+          GROQ_KEYS: ${{ secrets.GROQ_KEYS }}
+          CEREBRAS_KEYS: ${{ secrets.CEREBRAS_KEYS }}
+        run: |
+          python3 scripts/runners/browser-use-runner.py \
+            --url ${{ matrix.app.url }} \
+            --output reports/browser-use-${{ matrix.app.name }}.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: browser-use-${{ matrix.app.name }}
+          path: reports/browser-use-${{ matrix.app.name }}.json
+          retention-days: 30
+
+  schemathesis:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app:
+          - name: educahubplay
+            openapi: https://educahubplay-omega.vercel.app/openapi.json
+            base: https://educahubplay-omega.vercel.app
+      fail-fast: false
+      # Schemathesis só roda se openapi.json existe (spec 034 setup + spec 035 gerar)
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Schemathesis
+        run: pip install schemathesis
+      - name: Fuzz ${{ matrix.app.name }}
+        continue-on-error: true  # bugs são esperados, não param workflow
+        run: |
+          bash scripts/runners/schemathesis-runner.sh \
+            --spec ${{ matrix.app.openapi }} \
+            --base-url ${{ matrix.app.base }} \
+            --output reports/schemathesis-${{ matrix.app.name }}.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: schemathesis-${{ matrix.app.name }}
+          path: reports/schemathesis-${{ matrix.app.name }}.json
+          retention-days: 30
+
+  consolidate:
+    needs: [browser-use, schemathesis]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: reports/
+      - name: Summary
+        run: |
+          echo "## Nightly Validate — $(date -u +%Y-%m-%d)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          for f in reports/*/*.json; do
+            echo "### $(basename $(dirname $f))" >> $GITHUB_STEP_SUMMARY
+            echo '```json' >> $GITHUB_STEP_SUMMARY
+            head -c 4000 "$f" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          done

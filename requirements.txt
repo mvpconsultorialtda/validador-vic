@@ -1,0 +1,10 @@
+# Runner central Python — dependências mínimas
+pyyaml>=6.0
+requests>=2.31
+# Instalar quando spec 035 for executar Browser-Use real:
+# browser-use>=0.1.0
+# langchain-google-genai>=1.0
+# langchain-groq>=0.1
+# playwright>=1.40
+# Instalar quando spec 035 for executar Schemathesis:
+# schemathesis>=4.0

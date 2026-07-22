@@ -1,0 +1,56 @@
+# validador-vic — config dos apps-alvo
+# Runner central lê este arquivo pra saber quem atacar
+
+apps:
+  - name: educahubplay
+    url: https://educahubplay-omega.vercel.app
+    sitemap: https://educahubplay-omega.vercel.app/sitemap.xml
+    openapi: https://educahubplay-omega.vercel.app/openapi.json  # gerar via next-openapi-gen
+    playwright_ci: true
+    sentry_org: mvpconsultoria
+    sentry_project: educahubplay
+    posthog_project: educahubplay
+    coderabbit_active: true
+    testsprite_bootstrap: true  # 30 dias free
+    repo_github: mvpconsultorialtda/educahubplay
+
+  - name: xequemath
+    url: https://xequemath.vercel.app
+    sitemap: https://xequemath.vercel.app/sitemap.xml
+    openapi: https://xequemath.vercel.app/openapi.json
+    playwright_ci: true
+    sentry_org: mvpconsultoria
+    sentry_project: xequemath
+    posthog_project: xequemath
+    coderabbit_active: true
+    testsprite_bootstrap: false
+    repo_github: mvpconsultorialtda/xequemath
+
+  - name: hq-lab
+    url: https://hq-lab.vercel.app
+    sitemap: https://hq-lab.vercel.app/sitemap.xml
+    openapi: https://hq-lab.vercel.app/openapi.json
+    playwright_ci: true
+    sentry_org: mvpconsultoria
+    sentry_project: hq-lab
+    posthog_project: hq-lab
+    coderabbit_active: true
+    testsprite_bootstrap: false
+    repo_github: mvpconsultorialtda/hq-lab
+
+  - name: lab-games
+    url: https://lab-games.vercel.app
+    sitemap: https://lab-games.vercel.app/sitemap.xml
+    openapi: https://lab-games.vercel.app/openapi.json
+    playwright_ci: true
+    sentry_org: mvpconsultoria
+    sentry_project: lab-games
+    posthog_project: lab-games
+    coderabbit_active: true
+    testsprite_bootstrap: false
+    repo_github: mvpconsultorialtda/lab-games
+
+  # InovaEDUCACAO Landing — URL a definir
+  # - name: inovaeducacao-landing
+  #   url: https://inovaeducacao-landing.vercel.app
+  #   ...

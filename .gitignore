@@ -1,0 +1,32 @@
+# .env com secrets
+.env
+.env.local
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Reports gerados por runners
+reports/
+*.log
+
+# Bruno environments com tokens dev
+bruno-collections/*/environments/*.local.bru
+
+# Node (caso Bruno CLI use)
+node_modules/
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
