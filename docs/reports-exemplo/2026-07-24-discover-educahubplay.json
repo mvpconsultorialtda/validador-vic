@@ -1,0 +1,50 @@
+{
+  "total_existentes": 13,
+  "total_referenciadas": 16,
+  "ok_intersection": [
+    "/",
+    "/assistente",
+    "/assistente/material-grafico",
+    "/duelo",
+    "/duelo/[param]",
+    "/login",
+    "/meu-perfil",
+    "/quiz",
+    "/quiz/[param]",
+    "/quiz/criar",
+    "/rankings",
+    "/solicitar"
+  ],
+  "orfas_existem_sem_referencia": [
+    "/atendimento/solicitacoes"
+  ],
+  "links_mortos_referenciadas_sem_rota": [
+    {
+      "rota": "/invite",
+      "referenciada_em": [
+        "components/navigation.tsx:34"
+      ]
+    },
+    {
+      "rota": "/jogos",
+      "referenciada_em": [
+        "components/navigation.tsx:18"
+      ]
+    },
+    {
+      "rota": "/meus-jogos",
+      "referenciada_em": [
+        "app/quiz/criar/page.tsx:130",
+        "components/navigation.tsx:27"
+      ]
+    },
+    {
+      "rota": "/servicos",
+      "referenciada_em": [
+        "components/navigation.tsx:21"
+      ]
+    }
+  ],
+  "total_links_mortos": 4,
+  "target": "/home/claude-agent/repositorios/educahubplay"
+}
