@@ -1,0 +1,40 @@
+{
+  "app_url": "https://educahubplay-omega.vercel.app",
+  "sitemap": "https://educahubplay-omega.vercel.app/sitemap.xml",
+  "objetivo": "acesse a pagina e clique nos botoes Entrar, Cadastrar, Login. Reporte se algum leva a pagina de erro 404 ou nao funciona. Se AuthGuard mostrar Faca Login, isso e correto - nao e bug.",
+  "started_at": "2026-07-24T19:00:19.492995+00:00",
+  "finished_at": "2026-07-24T19:03:49.608780+00:00",
+  "duration_s": 210,
+  "rotator_ativo": true,
+  "keys_summary": {
+    "gemini_keys": 5,
+    "groq_keys": 1,
+    "cerebras_keys": 0,
+    "total_keys": 6
+  },
+  "keys_usadas_count": 5,
+  "retries_count": 0,
+  "rotas_descobertas_no_sitemap": 5,
+  "rotas_visitadas": 5,
+  "bugs_reportados": [
+    {
+      "url": "https://educahubplay-omega.vercel.app",
+      "descricao": "None",
+      "detectado_em": "2026-07-24T19:01:01.039524+00:00",
+      "key_prefixo": "gemini:AIzaSyAj..."
+    },
+    {
+      "url": "https://educahubplay-omega.vercel.app/quiz",
+      "descricao": "None",
+      "detectado_em": "2026-07-24T19:02:00.308463+00:00",
+      "key_prefixo": "gemini:AIzaSyC0..."
+    },
+    {
+      "url": "https://educahubplay-omega.vercel.app/quiz/criar",
+      "descricao": "None",
+      "detectado_em": "2026-07-24T19:02:10.469197+00:00",
+      "key_prefixo": "gemini:AIzaSyA3..."
+    }
+  ],
+  "total_bugs": 3
+}
