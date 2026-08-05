@@ -62,8 +62,8 @@ pnpm test:fuzz        # roda Gremlins.js dentro Playwright
 **Do lado daqui (runner central):**
 ```bash
 cd ~/repositorios/validador-vic
-python3 scripts/runners/browser-use-runner.py --url https://educahubplay-omega.vercel.app
-bash scripts/runners/schemathesis-runner.sh --spec https://educahubplay-omega.vercel.app/openapi.json
+python3 scripts/runners/browser-use-runner.py --url https://educahubplay.vercel.app
+bash scripts/runners/schemathesis-runner.sh --spec https://educahubplay.vercel.app/openapi.json
 ```
 
 Detalhes: [docs/02-operacao-in-project.md](docs/02-operacao-in-project.md) e [docs/03-operacao-runner-central.md](docs/03-operacao-runner-central.md).

@@ -1,6 +1,6 @@
 {
-  "app_url": "https://educahubplay-omega.vercel.app",
-  "sitemap": "https://educahubplay-omega.vercel.app/sitemap.xml",
+  "app_url": "https://educahubplay.vercel.app",
+  "sitemap": "https://educahubplay.vercel.app/sitemap.xml",
   "objetivo": "navegue a página, tente clicar botões visíveis e reportar problemas de UX ou erros visíveis",
   "started_at": "2026-07-22T20:40:49.372849+00:00",
   "finished_at": "2026-07-22T20:45:49.741026+00:00",
@@ -18,62 +18,62 @@
   "rotas_visitadas": 10,
   "bugs_reportados": [
     {
-      "url": "https://educahubplay-omega.vercel.app",
+      "url": "https://educahubplay.vercel.app",
       "descricao": "None",
       "detectado_em": "2026-07-22T20:41:30.961657+00:00",
       "key_prefixo": "gemini:AIzaSyAj..."
     },
     {
-      "url": "https://educahubplay-omega.vercel.app/quiz",
+      "url": "https://educahubplay.vercel.app/quiz",
       "descricao": "None",
       "detectado_em": "2026-07-22T20:42:05.147899+00:00",
       "key_prefixo": "gemini:AIzaSyC0..."
     },
     {
-      "url": "https://educahubplay-omega.vercel.app/quiz/criar",
+      "url": "https://educahubplay.vercel.app/quiz/criar",
       "descricao": "None",
       "detectado_em": "2026-07-22T20:42:18.563946+00:00",
       "key_prefixo": "gemini:AIzaSyA3..."
     },
     {
-      "url": "https://educahubplay-omega.vercel.app/rankings",
-      "descricao": "Foi detectado um bug de navegação crítico: ao tentar acessar a URL `https://educahubplay-omega.vercel.app/rankings`, a página sempre redireciona para a URL raiz `https://educahubplay-omega.vercel.app/`. Isso impede o acesso direto à seção de rankings. \n\nNa página inicial (`https://educahubplay-omega.vercel.app/`), não foram encontrados outros bugs visíveis, erros de layout, botões que não funcionam, formulários quebrados ou textos sem sentido. A navegação e os elementos visíveis na página inicial parecem estar OK, exceto pelo problema de redirecionamento para a página de rankings.",
+      "url": "https://educahubplay.vercel.app/rankings",
+      "descricao": "Foi detectado um bug de navegação crítico: ao tentar acessar a URL `https://educahubplay.vercel.app/rankings`, a página sempre redireciona para a URL raiz `https://educahubplay.vercel.app/`. Isso impede o acesso direto à seção de rankings. \n\nNa página inicial (`https://educahubplay.vercel.app/`), não foram encontrados outros bugs visíveis, erros de layout, botões que não funcionam, formulários quebrados ou textos sem sentido. A navegação e os elementos visíveis na página inicial parecem estar OK, exceto pelo problema de redirecionamento para a página de rankings.",
       "detectado_em": "2026-07-22T20:42:58.731646+00:00",
       "key_prefixo": "gemini:AIzaSyDp..."
     },
     {
-      "url": "https://educahubplay-omega.vercel.app/meu-perfil",
-      "descricao": "Bug Report: The 'Entrar' button (index 933) on the home page (https://educahubplay-omega.vercel.app/) does not appear to be functional. Clicking it does not lead to a login page, a profile page, or any other visible change in the UI. The page remains on the home page after the click. This is a visible bug/UX problem.",
+      "url": "https://educahubplay.vercel.app/meu-perfil",
+      "descricao": "Bug Report: The 'Entrar' button (index 933) on the home page (https://educahubplay.vercel.app/) does not appear to be functional. Clicking it does not lead to a login page, a profile page, or any other visible change in the UI. The page remains on the home page after the click. This is a visible bug/UX problem.",
       "detectado_em": "2026-07-22T20:43:28.394141+00:00",
       "key_prefixo": "gemini:AIzaSyBA..."
     },
     {
-      "url": "https://educahubplay-omega.vercel.app/solicitar",
+      "url": "https://educahubplay.vercel.app/solicitar",
       "descricao": "None",
       "detectado_em": "2026-07-22T20:43:51.356244+00:00",
       "key_prefixo": "gemini:AIzaSyAj..."
     },
     {
-      "url": "https://educahubplay-omega.vercel.app/atendimento/solicitacoes",
+      "url": "https://educahubplay.vercel.app/atendimento/solicitacoes",
       "descricao": "None",
       "detectado_em": "2026-07-22T20:44:10.702387+00:00",
       "key_prefixo": "gemini:AIzaSyC0..."
     },
     {
-      "url": "https://educahubplay-omega.vercel.app/duelo",
+      "url": "https://educahubplay.vercel.app/duelo",
       "descricao": "None",
       "detectado_em": "2026-07-22T20:44:21.724810+00:00",
       "key_prefixo": "gemini:AIzaSyA3..."
     },
     {
-      "url": "https://educahubplay-omega.vercel.app/assistente",
-      "descricao": "Bug visível: O botão 'Entrar / Cadastrar' na página inicial do assistente leva a uma página 404 (página não encontrada) no URL `https://educahubplay-omega.vercel.app/login`.",
+      "url": "https://educahubplay.vercel.app/assistente",
+      "descricao": "Bug visível: O botão 'Entrar / Cadastrar' na página inicial do assistente leva a uma página 404 (página não encontrada) no URL `https://educahubplay.vercel.app/login`.",
       "detectado_em": "2026-07-22T20:44:48.315106+00:00",
       "key_prefixo": "gemini:AIzaSyDp..."
     },
     {
-      "url": "https://educahubplay-omega.vercel.app/assistente/material-grafico",
-      "descricao": "Bug visível: Ao tentar interagir com os botões 'Quizzes', 'Criar' e 'Jogar' na URL https://educahubplay-omega.vercel.app/assistente/material-grafico, a página redireciona para outras seções da aplicação (por exemplo, para '/quiz' ou '/assistente/quiz/criar'), em vez de realizar uma ação ou exibir um modal/popup na própria página. Isso impede a inspeção completa da página 'material-grafico' para outros possíveis bugs de layout ou funcionalidade, pois a navegação constante desvia o foco da página alvo. Este comportamento é um problema de UX, pois o usuário espera que as interações ocorram no contexto da página atual, a menos que seja um link de navegação explícito para uma nova seção. No entanto, os botões 'Jogar' estão associados a quizzes específicos na página 'material-grafico', e clicar neles deveria iniciar o quiz ou mostrar mais detalhes sem sair da página de listagem de materiais. O mesmo se aplica ao botão 'Criar'.",
+      "url": "https://educahubplay.vercel.app/assistente/material-grafico",
+      "descricao": "Bug visível: Ao tentar interagir com os botões 'Quizzes', 'Criar' e 'Jogar' na URL https://educahubplay.vercel.app/assistente/material-grafico, a página redireciona para outras seções da aplicação (por exemplo, para '/quiz' ou '/assistente/quiz/criar'), em vez de realizar uma ação ou exibir um modal/popup na própria página. Isso impede a inspeção completa da página 'material-grafico' para outros possíveis bugs de layout ou funcionalidade, pois a navegação constante desvia o foco da página alvo. Este comportamento é um problema de UX, pois o usuário espera que as interações ocorram no contexto da página atual, a menos que seja um link de navegação explícito para uma nova seção. No entanto, os botões 'Jogar' estão associados a quizzes específicos na página 'material-grafico', e clicar neles deveria iniciar o quiz ou mostrar mais detalhes sem sair da página de listagem de materiais. O mesmo se aplica ao botão 'Criar'.",
       "detectado_em": "2026-07-22T20:45:47.740917+00:00",
       "key_prefixo": "gemini:AIzaSyBA..."
     }

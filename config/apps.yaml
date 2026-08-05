@@ -3,9 +3,9 @@
 
 apps:
   - name: educahubplay
-    url: https://educahubplay-omega.vercel.app
-    sitemap: https://educahubplay-omega.vercel.app/sitemap.xml
-    openapi: https://educahubplay-omega.vercel.app/openapi.json  # gerar via next-openapi-gen
+    url: https://educahubplay.vercel.app
+    sitemap: https://educahubplay.vercel.app/sitemap.xml
+    openapi: https://educahubplay.vercel.app/openapi.json  # gerar via next-openapi-gen
     playwright_ci: true
     sentry_org: mvpconsultoria
     sentry_project: educahubplay

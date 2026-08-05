@@ -3,7 +3,7 @@
  * Copiado por install-in-app.sh · spec 034
  *
  * BASE_URL default = localhost dev. Override com env var:
- *   BASE_URL=https://educahubplay-omega.vercel.app pnpm playwright test
+ *   BASE_URL=https://educahubplay.vercel.app pnpm playwright test
  */
 import { defineConfig, devices } from "@playwright/test";
 

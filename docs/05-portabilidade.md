@@ -125,7 +125,7 @@ git clone https://github.com/mvpconsultorialtda/validador-vic.git
 # copiar .env do local
 scp .env vps-mvp:/opt/validador-vic/.env
 # testar
-ssh vps-mvp "cd /opt/validador-vic && python3 scripts/runners/browser-use-runner.py --url https://educahubplay-omega.vercel.app --dry-run"
+ssh vps-mvp "cd /opt/validador-vic && python3 scripts/runners/browser-use-runner.py --url https://educahubplay.vercel.app --dry-run"
 # ativar cron
 ```
 

@@ -81,7 +81,7 @@ Editar `config/apps.yaml` do validador-vic:
 ```yaml
 apps:
   - name: educahubplay
-    url: https://educahubplay-omega.vercel.app
+    url: https://educahubplay.vercel.app
     sitemap: /sitemap.xml
     openapi: /openapi.json
     playwright_ci: true

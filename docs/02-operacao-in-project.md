@@ -28,7 +28,7 @@ Claude Code + MCP navega o app real, coleta seletores robustos, emite arquivo `.
 ### Codegen manual (sem LLM)
 
 ```bash
-pnpm playwright codegen https://educahubplay-omega.vercel.app
+pnpm playwright codegen https://educahubplay.vercel.app
 ```
 
 Grava sessão manual, emite código Playwright — cola em novo `.spec.ts`.
@@ -55,7 +55,7 @@ Ao falhar, emite JSON com violações WCAG 2.2 — cada nó DOM + regra violada.
 Rodar em produção (não só local):
 
 ```bash
-BASE_URL=https://educahubplay-omega.vercel.app pnpm playwright test tests/a11y
+BASE_URL=https://educahubplay.vercel.app pnpm playwright test tests/a11y
 ```
 
 ## Gremlins.js — Fuzzing UI dentro do Playwright
@@ -169,7 +169,7 @@ Sitemap fica em `app/sitemap.ts`. Template canônico exporta função async lend
 Testar:
 
 ```bash
-curl https://educahubplay-omega.vercel.app/sitemap.xml
+curl https://educahubplay.vercel.app/sitemap.xml
 ```
 
 Deve listar todas URLs (rotas estáticas + dinâmicas).

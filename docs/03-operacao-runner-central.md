@@ -27,8 +27,8 @@ CEREBRAS_KEYS=csk-xxx                # https://cloud.cerebras.ai
 
 ```bash
 python3 scripts/runners/browser-use-runner.py \
-  --url https://educahubplay-omega.vercel.app \
-  --sitemap https://educahubplay-omega.vercel.app/sitemap.xml \
+  --url https://educahubplay.vercel.app \
+  --sitemap https://educahubplay.vercel.app/sitemap.xml \
   --objetivo "navegue todas as rotas, tente quebrar formulários, reporte bugs visíveis" \
   --max-rotas 20 \
   --output relatorio-educahubplay.json
@@ -77,8 +77,8 @@ Script `scripts/runners/schemathesis-runner.sh`.
 
 ```bash
 bash scripts/runners/schemathesis-runner.sh \
-  --spec https://educahubplay-omega.vercel.app/openapi.json \
-  --base-url https://educahubplay-omega.vercel.app \
+  --spec https://educahubplay.vercel.app/openapi.json \
+  --base-url https://educahubplay.vercel.app \
   --output relatorio-schemathesis-educahubplay.json
 ```
 
@@ -133,7 +133,7 @@ No Claude Code:
 Depois qualquer conversa pode invocar:
 
 ```
-Cria teste Playwright pra fluxo X. Navegue no app https://educahubplay-omega.vercel.app.
+Cria teste Playwright pra fluxo X. Navegue no app https://educahubplay.vercel.app.
 ```
 
 Playwright MCP + Claude Code navegam ao vivo, coletam seletores, geram `.spec.ts`.

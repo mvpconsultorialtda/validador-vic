@@ -37,8 +37,8 @@ Editar `config/apps.yaml`:
 ```yaml
 apps:
   - name: educahubplay
-    url: https://educahubplay-omega.vercel.app
-    sitemap: https://educahubplay-omega.vercel.app/sitemap.xml
+    url: https://educahubplay.vercel.app
+    sitemap: https://educahubplay.vercel.app/sitemap.xml
     repo_github: mvpconsultorialtda/educahubplay
     thresholds:
       axe_critical: 0

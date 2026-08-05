@@ -123,7 +123,7 @@ Cada app instrumentado do mesmo jeito:
 
 | Plataforma | In-project instalado | SaaS DSN Sentry | SaaS PostHog | URL config runner |
 |---|---|---|---|---|
-| EducaHubPlay | ✅ | `educahubplay@sentry.io` | `educahubplay@posthog.com` | `educahubplay-omega.vercel.app` |
+| EducaHubPlay | ✅ | `educahubplay@sentry.io` | `educahubplay@posthog.com` | `educahubplay.vercel.app` |
 | XequeMath | ✅ | `xequemath@sentry.io` | `xequemath@posthog.com` | `xequemath.vercel.app` |
 | HQ-Lab | ✅ | `hqlab@sentry.io` | `hqlab@posthog.com` | `hq-lab.vercel.app` |
 | Lab Games | ✅ | `labgames@sentry.io` | `labgames@posthog.com` | `lab-games.vercel.app` |

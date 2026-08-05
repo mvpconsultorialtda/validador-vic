@@ -54,12 +54,12 @@ python3 -m venv .venv
 ```bash
 # Screenshot rota individual
 .venv/bin/python scripts/runners/screenshot-loop.py \
-  --url https://educahubplay-omega.vercel.app/cruzadinha/biologia \
+  --url https://educahubplay.vercel.app/cruzadinha/biologia \
   --output reports/screenshots/2026-07-28-cruzadinha-bio.png
 
 # A11y check da mesma rota
 .venv/bin/python scripts/runners/axe-runner.py \
-  --url https://educahubplay-omega.vercel.app/cruzadinha/biologia \
+  --url https://educahubplay.vercel.app/cruzadinha/biologia \
   --output reports/axe/2026-07-28-cruzadinha-bio.json
 ```
 
@@ -68,7 +68,7 @@ python3 -m venv .venv
 ```bash
 # Audit axe em todas rotas do sitemap
 .venv/bin/python scripts/runners/axe-runner.py \
-  --sitemap https://educahubplay-omega.vercel.app/sitemap.xml \
+  --sitemap https://educahubplay.vercel.app/sitemap.xml \
   --output reports/axe-audit-YYYY-MM-DD/ \
   --max-rotas 30
 

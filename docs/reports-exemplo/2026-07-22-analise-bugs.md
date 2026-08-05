@@ -1,7 +1,7 @@
 # Análise — Passe autônomo completo EducaHubPlay 2026-07-22
 
 **Runner:** Browser-Use 0.13.6 + Gemini 2.5 Flash (rotator 5 keys)
-**Alvo:** https://educahubplay-omega.vercel.app
+**Alvo:** https://educahubplay.vercel.app
 **Rotas visitadas:** 10 (das 32 do sitemap · max_rotas=10)
 **Duração:** 300s · **Retries por quota:** 0
 
@@ -27,7 +27,7 @@
 **Causa:** `app/page.tsx:250` tem `<Link href="/login">Entrar / Cadastrar</Link>` mas rota `app/login/page.tsx` nunca foi criada.
 
 **Evidência do agent (BUG 9):**
-> "Bug visível: O botão 'Entrar / Cadastrar' na página inicial do assistente leva a uma página 404 (página não encontrada) no URL `https://educahubplay-omega.vercel.app/login`."
+> "Bug visível: O botão 'Entrar / Cadastrar' na página inicial do assistente leva a uma página 404 (página não encontrada) no URL `https://educahubplay.vercel.app/login`."
 
 **Evidência do agent (BUG 5):**
 > "The 'Entrar' button (index 933) on the home page does not appear to be functional. Clicking it does not lead to a login page..."

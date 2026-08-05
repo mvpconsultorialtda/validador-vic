@@ -16,7 +16,7 @@ jobs:
       matrix:
         app:
           - name: educahubplay
-            url: https://educahubplay-omega.vercel.app
+            url: https://educahubplay.vercel.app
           - name: xequemath
             url: https://xequemath.vercel.app
           - name: hq-lab
@@ -52,8 +52,8 @@ jobs:
       matrix:
         app:
           - name: educahubplay
-            openapi: https://educahubplay-omega.vercel.app/openapi.json
-            base: https://educahubplay-omega.vercel.app
+            openapi: https://educahubplay.vercel.app/openapi.json
+            base: https://educahubplay.vercel.app
       fail-fast: false
       # Schemathesis só roda se openapi.json existe (spec 034 setup + spec 035 gerar)
     steps:
