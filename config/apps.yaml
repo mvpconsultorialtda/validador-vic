@@ -13,6 +13,13 @@ apps:
     coderabbit_active: true
     testsprite_bootstrap: true  # 30 dias free
     repo_github: mvpconsultorialtda/educahubplay
+    widget:
+      enabled: true
+      data_project: educahubplay
+      min_version: "1.4.0"
+      dev_server_port: 3000
+      framework: nextjs
+      bridge_file: lib/firebase.ts
 
   - name: xequemath
     url: https://xequemath.vercel.app
@@ -25,6 +32,13 @@ apps:
     coderabbit_active: true
     testsprite_bootstrap: false
     repo_github: mvpconsultorialtda/xequemath
+    widget:
+      enabled: true
+      data_project: xequemath
+      min_version: "1.4.0"
+      dev_server_port: 3000
+      framework: nextjs
+      bridge_file: lib/firebase.ts
 
   - name: hq-lab
     url: https://hq-lab.vercel.app
@@ -37,6 +51,13 @@ apps:
     coderabbit_active: true
     testsprite_bootstrap: false
     repo_github: mvpconsultorialtda/hq-lab
+    widget:
+      enabled: true
+      data_project: hq-lab
+      min_version: "1.4.0"
+      dev_server_port: 3000
+      framework: react-scripts
+      bridge_file: src/api/firebase.class.ts
 
   - name: lab-games
     url: https://lab-games.vercel.app
